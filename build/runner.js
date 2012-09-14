@@ -52,45 +52,90 @@ function onfinishedTests() {
 
 function addLogging() {
 	window.document.addEventListener( "DOMContentLoaded", function() {
-		var current_test_assertions = [];
+		var xmlEncode = function (text) {
+			text = text.replace(/&/g, '&amp;');
+			text = text.replace(/\"/g, '&quot;');
+			text = text.replace(/\'/g, '&apos;');
+			text = text.replace(/</g, '&lt;');
+			text = text.replace(/>/g, '&gt;');
+			return text;
+		};
 
-		QUnit.testDone(function(result) {
-			var name = result.module + ': ' + result.name;
-			var i;
-
-			if (result.failed) {
-				console.log('Assertion Failed: ' + name);
-
-				for (i = 0; i < current_test_assertions.length; i++) {
-					console.log('    ' + current_test_assertions[i]);
-				}
+		var moduleList = [];
+		var getModule = function(moduleName) {
+			if (!moduleList[moduleName]) {
+				moduleList[moduleName] = {
+					name: moduleName,
+					time: 0,
+					tests: [],
+					failureCount: 0,
+				};
 			}
+			return moduleList[moduleName];
+		};
+		var currentModuleName;
 
-			current_test_assertions = [];
+		QUnit.testStart(function(result) {
+			currentModuleName = result.name;
 		});
 
 		QUnit.log(function(details) {
-			var response;
-
-			if (details.result) {
-				return;
-			}
-
-			response = details.message || '';
+			var module = getModule(currentModuleName);
+			var response = details.message || '';
 
 			if (typeof details.expected !== 'undefined') {
 				if (response) {
 					response += ', ';
 				}
-
 				response += 'expected: ' + details.expected + ', but was: ' + details.actual;
 			}
-
-			current_test_assertions.push('Failed assertion: ' + response);
+			module.tests.push({ moduleName: currentModuleName, name: details.message, result: details.result, message: response });
+			if(!details.result) ++module.failureCount;
 		});
 
 		QUnit.done(function(result){
+			console.log('<?xml version="1.0"?>');
+			console.log('<testsuites>');
+			for(moduleName in moduleList) {
+				var module = moduleList[moduleName];
+				console.log('  <testsuite timestamp="' + module.time + '" tests="' + module.tests.length + '" failures="' + module.failureCount + '" name="' + xmlEncode(module.name) + '">');
+				for(testName in module.tests) {
+					var test = module.tests[testName];
+					console.log('    <testcase name="' + xmlEncode(test.name) + '" classname="' + xmlEncode(test.moduleName) + '">');
+					if(!test.result) {
+						console.log('      <failure>' + xmlEncode(test.message) + '</failure>');
+					}
+					console.log('    </testcase>');
+				}
+				console.log('  </testsuite>');
+			}
+			console.log('</testsuites>');
+			console.log('<!--');
 			console.log('Took ' + result.runtime +  'ms to run ' + result.total + ' tests. ' + result.passed + ' passed, ' + result.failed + ' failed.');
+			console.log('-->');
+
+			var total = 0;
+			var covered = 0;
+			try {
+				for(fileName in _$jscoverage) {
+					var covForFile = _$jscoverage[fileName];
+					for(var i = 0; i < covForFile.length; ++i) {
+						if(covForFile[i] !== undefined) {
+							++total;
+							if(covForFile[i] > 0) { ++covered; }
+						}
+					}
+				}
+			} catch(e) {}
+			var coverage = { total: total, covered: covered};
+			if(coverage.total > 0) {
+				var percent = coverage.covered / coverage.total * 100;
+				console.log("<!--");
+				console.log("##teamcity[buildStatisticValue key='CodeCoverageAbsLCovered' value='" + coverage.covered + "']");
+				console.log("##teamcity[buildStatisticValue key='CodeCoverageAbsLTotal ' value='" + coverage.total + "']");
+				console.log("##teamcity[buildStatisticValue key='CodeCoverageL' value='" + percent + "']");
+				console.log("-->");
+			}
 			window.qunitDone = result;
 		});
 	}, false );

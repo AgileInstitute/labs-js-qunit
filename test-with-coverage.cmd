@@ -11,7 +11,7 @@ build\jscoverage.exe source output/source_instrumented
 
 :: Run tests
 if not exist output mkdir output
-build\phantomjs.exe build\run_qunit.js http://localhost:1799/output/source_instrumented/password.test.html junit-xml > output\testresult.xml
+build\phantomjs.exe build\runner.js http://localhost:1799/output/source_instrumented/all.test.html > output\testresult.xml
 type output\testresult.xml
 
 :: Stop web server (to ensure we can do a nightly clean checkout)
