@@ -191,9 +191,15 @@ page.open(phantom.args[0], function(status){
 				} catch(e) {}
 				return { total: total, covered: covered};
 			});
-			console.log('<!--\n Coverage: ' + coverage.covered + " out of " + coverage.total + ' \n-->');
-
 			output.fn(result);
+			if(coverage.total > 0) {
+				var percent = coverage.covered / coverage.total * 100;
+				console.log("<!--");
+				console.log("##teamcity[buildStatisticValue key='CodeCoverageAbsLCovered' value='" + coverage.covered + "']");
+				console.log("##teamcity[buildStatisticValue key='CodeCoverageAbsLTotal ' value='" + coverage.total + "']");
+				console.log("##teamcity[buildStatisticValue key='CodeCoverageL' value='" + percent + "']");
+				console.log("-->");
+			}
             phantom.exit((parseInt(failedNum, 10) > 0) ? 1 : 0);
 			
         },
