@@ -1,5 +1,7 @@
-build\jscoverage.exe source source_instrumented
-:: start source_instrumented/jscoverage.html 
+@echo off
+xcopy /e /y lib\*.* output\lib\
+build\jscoverage.exe source output/source_instrumented
+:: start output/source_instrumented/jscoverage.html 
 set CD=%~dp0
-set URL=file:///%CD:\=/%source_instrumented/jscoverage.html?url=password.test.html
+set URL=file:///%CD:\=/%output/source_instrumented/jscoverage.html?url=password.test.html
 "c:\Program Files (x86)\Mozilla Firefox\firefox.exe" %URL%
