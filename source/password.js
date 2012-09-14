@@ -16,7 +16,7 @@ PasswordEvaluator.prototype = {
         var categoryCount = 0;
         if(digitCount > 0) { ++categoryCount; }
         if(alphaCount > 0) { ++categoryCount; }
-        if(specialCount > 0) ++categoryCount;
+        if(specialCount > 0) { ++categoryCount; }
         if(categoryCount > 1) {
             ++ result;
         }
