@@ -14,8 +14,8 @@ PasswordEvaluator.prototype = {
         var alphaCount = (password.match(/[a-zA-Z]/g) || []).length;
         var specialCount = password.length - digitCount - alphaCount;
         var categoryCount = 0;
-        if(digitCount > 0) ++categoryCount;
-        if(alphaCount > 0) ++categoryCount;
+        if(digitCount > 0) { ++categoryCount; }
+        if(alphaCount > 0) { ++categoryCount; }
         if(specialCount > 0) ++categoryCount;
         if(categoryCount > 1) {
             ++ result;
