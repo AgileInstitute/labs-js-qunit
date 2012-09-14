@@ -175,6 +175,24 @@ page.open(phantom.args[0], function(status){
 					tests_html: document.getElementById('qunit-tests').innerHTML
 				}
 			});
+			var coverage = page.evaluate(function() {
+				var total = 0;
+				var covered = 0;
+				try {
+				for(fileName in _$jscoverage) {
+					var covForFile = _$jscoverage[fileName];
+					for(var i = 0; i < covForFile.length; ++i) {
+						if(covForFile[i] !== undefined) {
+							++total;
+							if(covForFile[i] > 0) { ++covered; }
+						}
+					}
+				}
+				} catch(e) {}
+				return { total: total, covered: covered};
+			});
+			console.log('<!--\n Coverage: ' + coverage.covered + " out of " + coverage.total + ' \n-->');
+
 			output.fn(result);
             phantom.exit((parseInt(failedNum, 10) > 0) ? 1 : 0);
 			
