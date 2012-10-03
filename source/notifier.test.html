@@ -1,0 +1,30 @@
+<!Doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>password.test</title>
+  <link rel="stylesheet" href="../lib/qunit.css">
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script src="../lib/qunit.js"></script>
+  <script src="notifier.js"></script>
+  <!-- ToDo: stub this -->
+  <script src="emailService.js"></script>
+  <script>
+    module("notifier", {
+        setup: function() {
+			// given
+			this.notifier = new Notifier();
+        }
+    });
+    test("trigger", 0, function() {
+		// when
+		this.notifier.trigger("hello");
+
+		// then
+    });
+  </script>
+</body>
+</html>
