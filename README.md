@@ -23,6 +23,9 @@ run all tests
 From the command line
 ---------------------
 
+run all tests and show coverage analysis in the browser (Windows)
+    coverage.cmd
+
 run all tests with coverage producing output suitable for TeamCity (Windows)
 
     test-with-coverage.cmd

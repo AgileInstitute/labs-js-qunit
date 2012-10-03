@@ -2,29 +2,37 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>password.test</title>
+  <title>notifier.test</title>
   <link rel="stylesheet" href="../lib/qunit.css">
 </head>
 <body>
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
   <script src="../lib/qunit.js"></script>
+  <script src="../lib/sinon-1.4.2.js"></script>
   <script src="notifier.js"></script>
   <script src="emailService.js"></script>
   <script>
+
     module("notifier", {
         setup: function() {
 			// given
-			var emailService = new EmailService();
-			this.notifier = new Notifier(emailService);
+			this.emailService = new EmailService();
+			this.emailService.sendEmail = sinon.spy();
+			this.notifier = new Notifier(this.emailService);
         }
     });
-    test("trigger", 0, function() {
+
+    test("trigger", 2, function() {
 		// when
 		this.notifier.trigger("hello");
 
 		// then
+		var sendEmail = this.emailService.sendEmail;
+		equal(sendEmail.callCount, 1);
+		equal(sendEmail.args[0], "hello");
     });
+
   </script>
 </body>
 </html>
