@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>random.test</title>
+    <link rel="stylesheet" href="../lib/qunit.css">
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+<script src="../lib/qunit.js"></script>
+<script src="../lib/sinon-1.4.2.js"></script>
+<script src="random.js"></script>
+<script>
+    module("random", {
+        setup: function() {
+            sinon.stub(Math, "random").returns(0.85);
+        },
+        teardown: function() {
+            Math.random.restore();
+        }
+    });
+    test("randomBelow", function() {
+        equal(Math.randomBelow(6), 5, "6");
+        equal(Math.randomBelow(1), 0, "1");
+        throws(function() { Math.randomBelow(0) }, "invalid argument: 0", "0");
+    });
+</script>
+</body>
+</html>
