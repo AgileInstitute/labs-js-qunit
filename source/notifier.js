@@ -1,5 +1,5 @@
-Notifier = function() {
-	this.emailService = new EmailService();
+Notifier = function(emailService) {
+	this.emailService = emailService;
 };
 
 Notifier.prototype = {

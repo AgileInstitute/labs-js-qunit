@@ -10,13 +10,13 @@
   <div id="qunit-fixture"></div>
   <script src="../lib/qunit.js"></script>
   <script src="notifier.js"></script>
-  <!-- ToDo: stub this -->
   <script src="emailService.js"></script>
   <script>
     module("notifier", {
         setup: function() {
 			// given
-			this.notifier = new Notifier();
+			var emailService = new EmailService();
+			this.notifier = new Notifier(emailService);
         }
     });
     test("trigger", 0, function() {
