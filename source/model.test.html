@@ -1,0 +1,49 @@
+<!Doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>model.test</title>
+  <link rel="stylesheet" href="../lib/qunit.css">
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script src="../lib/qunit.js"></script>
+  <script src="../lib/sinon-1.4.2.js"></script>
+  <script src="model.js"></script>
+  <script>
+
+    module("model", {
+        setup: function() {
+			// given
+            // this.clock = sinon.useFakeTimers();
+            this.model = new Model();
+        },
+        teardown: function() {
+            // this.clock.restore();
+        }
+    });
+
+    asyncTest("getProduct", 2, function() {
+		// when
+		this.model.getProduct(4711, function(error, product) {
+            // then
+            ok(!error);
+            equal(product.name, 'Lars', '.name');
+            start();
+        });
+    });
+
+    asyncTest("getProduct-missing", 2, function() {
+        // when
+        this.model.getProduct(17, function(error, product) {
+            // then
+            ok(error);
+            equal(error.message, "product with id 17 not found");
+            start();
+        });
+    });
+
+  </script>
+</body>
+</html>
