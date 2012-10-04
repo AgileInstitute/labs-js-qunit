@@ -9,7 +9,7 @@
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
   <script src="../lib/qunit.js"></script>
-  <script src="../lib/sinon-1.4.2.js"></script>
+  <script src="../lib/sinon.js"></script>
   <script src="notifier.js"></script>
   <script src="emailService.js"></script>
   <script>
@@ -29,8 +29,8 @@
 
 		// then
 		var sendEmail = this.emailService.sendEmail;
-		equal(sendEmail.callCount, 1);
-		equal(sendEmail.args[0], "hello");
+		equal(sendEmail.callCount, 1, "sendEmail.callCount");
+		equal(sendEmail.args[0], "hello", "sendEmail.args[0]");
     });
 
   </script>

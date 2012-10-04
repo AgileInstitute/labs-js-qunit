@@ -3,14 +3,18 @@ Model = function() {
 
 Model.prototype = {
   getProduct: function(productId, callback) {
-      // Note: no ajax because we do not rely on server code this time
-      setTimeout(function() {
-          if(productId === 4711) {
-              var product = { name: 'Lars'};
-              callback(null, product);
-          } else {
-              callback(new Error("product with id " + productId + " not found"));
+      jQuery.ajax("/product", {
+          data: { productId : productId },
+          success: function(data) {
+              if(data.error) {
+                  callback(data.error);
+              } else {
+                  callback(null, data.product);
+              }
+          },
+          error: function() {
+              callback(new Error("server connection failed"));
           }
-      }, 2000);
+      });
   }
 };

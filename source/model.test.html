@@ -9,41 +9,69 @@
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
   <script src="../lib/qunit.js"></script>
-  <script src="../lib/sinon-1.4.2.js"></script>
+  <script src="../lib/jquery.js"></script>
+  <script src="../lib/jquery.mockjax.js"></script>
   <script src="model.js"></script>
   <script>
 
     module("model", {
         setup: function() {
 			// given
-            // this.clock = sinon.useFakeTimers();
             this.model = new Model();
         },
         teardown: function() {
-            // this.clock.restore();
+            $.mockjaxClear();
         }
     });
 
     asyncTest("getProduct", 2, function() {
+        // given
+        $.mockjax({
+            url: '/product',
+            data: { productId: 4711},
+            responseText: { error: false, product: { name: 'Lars'}},
+            responseTime: 1
+        });
+
 		// when
 		this.model.getProduct(4711, function(error, product) {
+
             // then
-            ok(!error);
-            equal(product.name, 'Lars', '.name');
+            ok(!error, 'error');
+            equal(product.name, 'Lars', 'product.name');
             start();
         });
     });
 
     asyncTest("getProduct-missing", 2, function() {
+        // given
+        $.mockjax({
+            url: '/product',
+            data: { productId: 17},
+            responseText: { error: { message: "product with id 17 not found"}},
+            responseTime: 1
+        });
+
         // when
         this.model.getProduct(17, function(error, product) {
+
             // then
-            ok(error);
-            equal(error.message, "product with id 17 not found");
+            ok(error, 'error');
+            equal(error.message, "product with id 17 not found", 'error.message');
             start();
         });
     });
 
+    asyncTest("getProduct-server-missing", 2, function() {
+        // when
+        this.model.getProduct(17, function(error, product) {
+
+            // then
+            ok(error, "error");
+            equal(error.message, "server connection failed", "error.message");
+            start();
+        });
+    });
   </script>
 </body>
 </html>
