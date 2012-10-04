@@ -13,10 +13,11 @@
 var url = phantom.args[0];
 
 var page = require('webpage').create();
+var logList = [];
 
 // Route "console.log()" calls from within the Page context to the main Phantom context (i.e. current "this")
 page.onConsoleMessage = function(msg) {
-	console.log(msg);
+	logList.push(msg);
 };
 
 page.onInitialized = function() {
@@ -44,10 +45,23 @@ function finished() {
 }
 
 function onfinishedTests() {
-	var output = page.evaluate(function() {
-			return JSON.stringify(window.qunitDone);
+	var qunitDone = page.evaluate(function() {
+		return JSON.stringify(window.qunitDone);
 	});
-	phantom.exit(JSON.parse(output).failed > 0 ? 1 : 0);
+    var output = page.evaluate(function() {
+        return window.output;
+    });
+    for(var i = 0; i < output.length; ++i) {
+        console.log(output[i]);
+    }
+    if(logList.length > 0) {
+        console.log("<!-- console.log() output:");
+        for(var i = 0; i < logList.length; ++i) {
+            console.log(logList[i]);
+        }
+        console.log("-->")
+    }
+	phantom.exit(JSON.parse(qunitDone).failed > 0 ? 1 : 0);
 }
 
 function addLogging() {
@@ -94,25 +108,26 @@ function addLogging() {
 		});
 
 		QUnit.done(function(result){
-			console.log('<?xml version="1.0"?>');
-			console.log('<testsuites>');
+            window.output = [];
+            window.output.push('<?xml version="1.0"?>');
+			window.output.push('<testsuites>');
 			for(moduleName in moduleList) {
 				var module = moduleList[moduleName];
-				console.log('  <testsuite timestamp="' + module.time + '" tests="' + module.tests.length + '" failures="' + module.failureCount + '" name="' + xmlEncode(module.name) + '">');
+				window.output.push('  <testsuite timestamp="' + module.time + '" tests="' + module.tests.length + '" failures="' + module.failureCount + '" name="' + xmlEncode(module.name) + '">');
 				for(testName in module.tests) {
 					var test = module.tests[testName];
-					console.log('    <testcase name="' + xmlEncode(test.name) + '" classname="' + xmlEncode(test.moduleName) + '">');
+					window.output.push('    <testcase name="' + xmlEncode(test.name) + '" classname="' + xmlEncode(test.moduleName) + '">');
 					if(!test.result) {
-						console.log('      <failure>' + xmlEncode(test.message) + '</failure>');
+						window.output.push('      <failure>' + xmlEncode(test.message) + '</failure>');
 					}
-					console.log('    </testcase>');
+					window.output.push('    </testcase>');
 				}
-				console.log('  </testsuite>');
+				window.output.push('  </testsuite>');
 			}
-			console.log('</testsuites>');
-			console.log('<!--');
-			console.log('Took ' + result.runtime +  'ms to run ' + result.total + ' tests. ' + result.passed + ' passed, ' + result.failed + ' failed.');
-			console.log('-->');
+			window.output.push('</testsuites>');
+			window.output.push('<!--');
+			window.output.push('Took ' + result.runtime +  'ms to run ' + result.total + ' tests. ' + result.passed + ' passed, ' + result.failed + ' failed.');
+			window.output.push('-->');
 
 			var total = 0;
 			var covered = 0;
@@ -130,11 +145,11 @@ function addLogging() {
 			var coverage = { total: total, covered: covered};
 			if(coverage.total > 0) {
 				var percent = coverage.covered / coverage.total * 100;
-				console.log("<!--");
-				console.log("##teamcity[buildStatisticValue key='CodeCoverageAbsLCovered' value='" + coverage.covered + "']");
-				console.log("##teamcity[buildStatisticValue key='CodeCoverageAbsLTotal ' value='" + coverage.total + "']");
-				console.log("##teamcity[buildStatisticValue key='CodeCoverageL' value='" + percent + "']");
-				console.log("-->");
+				window.output.push("<!--");
+				window.output.push("##teamcity[buildStatisticValue key='CodeCoverageAbsLCovered' value='" + coverage.covered + "']");
+				window.output.push("##teamcity[buildStatisticValue key='CodeCoverageAbsLTotal ' value='" + coverage.total + "']");
+				window.output.push("##teamcity[buildStatisticValue key='CodeCoverageL' value='" + percent + "']");
+				window.output.push("-->");
 			}
 			window.qunitDone = result;
 		});
