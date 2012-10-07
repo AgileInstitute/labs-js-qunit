@@ -1,0 +1,3 @@
+Klingon = function() {
+
+}
