@@ -1,10 +1,13 @@
 function onCountryChange(){
-	$('.new_address_form').hide();
-	var country = $("#country").val();
+    onCountryChangeImplAndDoesntThisNameSuck(document);
+}
+function onCountryChangeImplAndDoesntThisNameSuck(form) {
+	$('.new_address_form', form).hide();
+	var country = $("#country", form).val();
     if (country === "JP") {
-        $('.address_jp').show();
+        $('.address_jp', form).show();
     }
     else {
-        $('.address_generic').show();
+        $('.address_generic', form).show();
     }
 }
