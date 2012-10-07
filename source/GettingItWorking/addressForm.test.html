@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>QUnit Example</title>
+  <link rel="stylesheet" href="../../lib/qunit.css">
+  <style>
+  	.hidden {
+  		display: none;
+  	}
+  </style>
+</head>
+<body>
+  <div id="qunit"></div>
+  <form id="add_address">
+      <select id="country" class="chzn-select" data-placeholder="Choose a Country…">
+          <option value=""></option><!-- the top option is null value. Let Choosen use data-placeholder -->
+          <option value="CA">Canada</option>
+          <option value="JP">Japan</option>
+          <option value="US">United States</option>
+          <option value="$$">Narnia</option>
+      </select>
+
+      <fieldset class="new_address_form address_ca hidden">
+      </fieldset>
+
+      <fieldset class="new_address_form address_jp hidden">
+      </fieldset>
+
+      <fieldset class="new_address_form address_us hidden">
+      </fieldset>
+
+      <fieldset class="new_address_form address_generic hidden">
+      </fieldset>
+  </form>
+  <script src="../../lib/qunit.js"></script>
+  <script src="../../lib/jquery.js"></script>
+  <script src="addressForm.js"></script>
+  <script>
+  	j = jQuery.noConflict();
+  </script>
+  <script>
+	test( "no fieldsets visible at page load", function(){
+		equal(
+			j(".new_address_form:visible").length, 0,
+			"Expected all fieldsets invisible"
+		);
+	});
+      test( "if user selects japan then only Japanese fieldset is shown", function() {
+           j("#country").val("JP");
+           onCountryChange();
+           equal(
+                 j(".new_address_form:visible").length, 1,
+                 "Expected all but one fieldset to be hidden"
+                 );
+           equal(
+                 j(".address_jp:visible").length, 1,
+                 "Expected address_jp to be visible"
+                 );
+           });
+      test( "if user selects Narnia then only default fieldset is shown", function() {
+           j("#country").val("$$");
+           onCountryChange();
+           equal(
+                 j(".new_address_form:visible").length, 1,
+                 "Expected all but one fieldset to be hidden"
+                 );
+           equal(
+                 j(".address_generic:visible").length, 1,
+                 "Expected generic fieldset to be visible"
+                 );
+           });
+	</script>
+</body>
+</html>
