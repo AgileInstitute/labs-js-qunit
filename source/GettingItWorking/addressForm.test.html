@@ -12,35 +12,12 @@
 </head>
 <body>
   <div id="qunit"></div>
-  <div id="everythingFixture">
-      <form>
-          <select class="countrySelect" data-placeholder="Choose a Country…">
-              <option value=""></option><!-- the top option is null value. -->
-              <option value="CA">Canada</option>
-              <option value="JP">Japan</option>
-              <option value="US">United States</option>
-              <option value="$$">Narnia</option>
-          </select>
-
-          <fieldset class="new_address_form address_ca hidden">
-          </fieldset>
-
-          <fieldset class="new_address_form address_jp hidden">
-          </fieldset>
-
-          <fieldset class="new_address_form address_us hidden">
-          </fieldset>
-
-          <fieldset class="new_address_form address_generic hidden">
-          </fieldset>
-      </form>
-  </div>
   <script src="../../lib/qunit.js"></script>
   <script src="../../lib/jquery.js"></script>
   <script src="addressForm.js"></script>
   <script>
       test( "if user selects japan then only Japanese fieldset is shown", function() {
-          var fixture = $("#everythingFixture");
+          var fixture = $("#japaneseAndOtherFixture");
           $(".countrySelect", fixture).val("JP");
            onCountryChange(fixture);
            equal(
@@ -53,7 +30,7 @@
                  );
            });
       test( "if user selects Narnia then only default fieldset is shown", function() {
-          var fixture = $("#everythingFixture");
+          var fixture = $("#narniaWithNoCustomFieldsetAndDefaultFixture");
            $(".countrySelect", fixture).val("$$");
            onCountryChange(fixture);
            equal(
@@ -66,5 +43,35 @@
                  );
            });
 	</script>
+  <div id="japaneseAndOtherFixture">
+      <form>
+          <select class="countrySelect" data-placeholder="Choose a Country…">
+              <option value=""></option><!-- the top option is null value. -->
+              <option value="JP">Japan</option>
+              <option value="US">United States</option>
+          </select>
+
+          <fieldset class="new_address_form address_jp hidden">
+          </fieldset>
+
+          <fieldset class="new_address_form address_us hidden">
+          </fieldset>
+      </form>
+  </div>
+  <div id="narniaWithNoCustomFieldsetAndDefaultFixture">
+      <form>
+          <select class="countrySelect" data-placeholder="Choose a Country…">
+              <option value=""></option><!-- the top option is null value. -->
+              <option value="US">United States</option>
+              <option value="$$">Narnia</option>
+          </select>
+
+          <fieldset class="new_address_form address_us hidden">
+          </fieldset>
+
+          <fieldset class="new_address_form address_generic hidden">
+          </fieldset>
+      </form>
+  </div>
 </body>
 </html>
