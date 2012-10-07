@@ -42,7 +42,7 @@
       test( "if user selects japan then only Japanese fieldset is shown", function() {
           var fixture = $("#everythingFixture");
           $("#country", fixture).val("JP");
-           onCountryChangeImplAndDoesntThisNameSuck(fixture);
+           onCountryChange(fixture);
            equal(
                  $(".new_address_form:visible", fixture).length, 1,
                  "Expected all but one fieldset to be hidden"
@@ -55,7 +55,7 @@
       test( "if user selects Narnia then only default fieldset is shown", function() {
           var fixture = $("#everythingFixture");
            $("#country", fixture).val("$$");
-           onCountryChangeImplAndDoesntThisNameSuck(fixture);
+           onCountryChange(fixture);
            equal(
                  $(".new_address_form:visible", fixture).length, 1,
                  "Expected all but one fieldset to be hidden"

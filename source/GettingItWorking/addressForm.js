@@ -1,7 +1,4 @@
-function onCountryChange(){
-    onCountryChangeImplAndDoesntThisNameSuck(document);
-}
-function onCountryChangeImplAndDoesntThisNameSuck(form) {
+function onCountryChange(form) {
 	$('.new_address_form', form).hide();
 	var country = $("#country", form).val();
     if (country === "JP") {
