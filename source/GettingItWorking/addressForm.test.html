@@ -13,9 +13,9 @@
 <body>
   <div id="qunit"></div>
   <div id="everythingFixture">
-      <form id="add_address">
-          <select id="country" class="chzn-select" data-placeholder="Choose a Country…">
-              <option value=""></option><!-- the top option is null value. Let Choosen use data-placeholder -->
+      <form>
+          <select class="countrySelect" data-placeholder="Choose a Country…">
+              <option value=""></option><!-- the top option is null value. -->
               <option value="CA">Canada</option>
               <option value="JP">Japan</option>
               <option value="US">United States</option>
@@ -41,7 +41,7 @@
   <script>
       test( "if user selects japan then only Japanese fieldset is shown", function() {
           var fixture = $("#everythingFixture");
-          $("#country", fixture).val("JP");
+          $(".countrySelect", fixture).val("JP");
            onCountryChange(fixture);
            equal(
                  $(".new_address_form:visible", fixture).length, 1,
@@ -54,7 +54,7 @@
            });
       test( "if user selects Narnia then only default fieldset is shown", function() {
           var fixture = $("#everythingFixture");
-           $("#country", fixture).val("$$");
+           $(".countrySelect", fixture).val("$$");
            onCountryChange(fixture);
            equal(
                  $(".new_address_form:visible", fixture).length, 1,

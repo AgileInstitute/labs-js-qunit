@@ -1,6 +1,6 @@
 function onCountryChange(form) {
 	$('.new_address_form', form).hide();
-	var country = $("#country", form).val();
+	var country = $(".countrySelect", form).val();
     if (country === "JP") {
         $('.address_jp', form).show();
     }
