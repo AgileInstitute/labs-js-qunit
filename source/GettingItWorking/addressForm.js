@@ -1,8 +1,10 @@
 function onCountryChange(){
-	j('.new_address_form').hide();
-	var country = j("#country").val();
-    if (country == "JP")
-        j('.address_jp').show();
-    else
-        j('.address_generic').show();
+	$('.new_address_form').hide();
+	var country = $("#country").val();
+    if (country === "JP") {
+        $('.address_jp').show();
+    }
+    else {
+        $('.address_generic').show();
+    }
 }
