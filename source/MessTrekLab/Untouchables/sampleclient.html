@@ -13,8 +13,10 @@
         var enemy = new Klingon();
 
         var userInterface = new UserInterface("phaser", "1000", enemy);
-        userInterface.writeLine("hello world"); // Just for fun
-        userInterface.writeLine("Hi Rob!"); // Just for fun
+        game.processCommand(userInterface);
+
+        // For fun:
+        var userInterface = new UserInterface("photon", null, enemy);
         game.processCommand(userInterface);
     }
 </script>
