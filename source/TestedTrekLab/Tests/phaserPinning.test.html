@@ -74,6 +74,27 @@
         ok(klingon.destroy.calledOnce, "klingon destroyed");
     });
 
+    test("PhasersDamageOfZeroStillHits_AndNondestructivePhaserDamageDisplaysRemaining", function() {
+        // given
+        var minimalFired = 0;
+        var minimalHit = 1;
+        var klingon = new Klingon();
+        klingon.distance = 2000;
+        klingon.energy = 200;
+        this.ui.target = klingon;
+        this.ui.commandParameter = minimalFired;
+        sinon.stub(this.game, "generator").returns(0);
+
+        // when
+        this.game.processCommand(this.ui);
+
+        // then
+        equal(this.ui.writeLine.getCall(0).args[0], "Phasers hit Klingon at 2000 sectors with " + minimalHit + " units", "first message");
+        equal(this.ui.writeLine.getCall(1).args[0], "Klingon has 199 remaining", "second message");
+        // Isn't this also a bug?  I *ask* to fire zero, and I still hit?
+        // Acknowledge it, log it, but don't fix it yet!
+    });
+
   </script>
 </body>
 </html>
