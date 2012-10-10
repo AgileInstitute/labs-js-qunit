@@ -1,6 +1,7 @@
 Game = function() {
     this.e = 10000;
     this.t = 8;
+    this.maxPhaserRange = 4000;
 };
 
 Game.prototype = {
@@ -19,7 +20,7 @@ Game.prototype = {
             enemy = ui.variable("target");
             if(this.e >= amount) {
                 distance = enemy.distance;
-                if(distance > 4000) {
+                if(distance > this.maxPhaserRange) {
                     ui.writeLine("Klingon out of range of phasers at " + distance + " sectors...");
                 } else {
                     damage = amount - (((amount / 20) * distance / 200) + this.randomWithinLimitOf(200));

@@ -12,6 +12,7 @@
   <script src="../../../lib/jquery.js"></script>
   <script src="../../../lib/sinon.js"></script>
   <script src="../StarTrek/game.js"></script>
+  <script src="../StarTrek/klingon.js"></script>
   <script src="../Untouchables/userInterface.js"></script>
   <script>
 
@@ -20,13 +21,13 @@
 			// given
             this.game = new Game();
             this.ui = new UserInterface("phaser");
-            sinon.stub(this.ui, "writeLine").args
+            sinon.stub(this.ui, "writeLine");
         }
     });
 
     test("PhasersFiredWithInsufficientEnergy", function() {
         // given
-        this.ui.commandParameter = this.game.enegy + 1;
+        this.ui.commandParameter = this.game.energy + 1;
 
         // when
         this.game.processCommand(this.ui);
@@ -34,6 +35,24 @@
         // then
         equal(this.ui.writeLine.args[0], "Insufficient energy to fire phasers!");
     });
+
+    test("EnergyExpendedEvenWhenPhasersFiredWhileKlingonOutOfRange", function() {
+        // given
+        var outOfRange = this.game.maxPhaserRange + 1;
+        var klingon = new Klingon();
+        klingon.distance = outOfRange;
+        this.ui.target = klingon;
+        this.ui.commandParameter = 1000;
+        var energyBefore = this.game.e;
+
+        // when
+        this.game.processCommand(this.ui);
+
+        // then
+        equal(this.ui.writeLine.args[0], "Klingon out of range of phasers at " + outOfRange + " sectors...");
+        equal(this.game.e, energyBefore - 1000);
+    });
+
 
   </script>
 </body>
