@@ -11,13 +11,15 @@
 <script src="../../lib/qunit.js"></script>
 <script>
 
+    module("basicMoves");
+
     var Foo = {
         bar: function() { return "Baz"; }
     };
 
     // Begin slide 14 (No Magic) and 15 (Requirements & Conventions)
     test("fooBarIsBaz", function() {
-        equal(Foo.bar(), "Baz");
+        equal(Foo.bar(), "Baz", "bar");
     });
     // End slide 14 & 15
 
