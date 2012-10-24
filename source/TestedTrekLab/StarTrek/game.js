@@ -18,9 +18,9 @@ Game.prototype = {
         if(ui.parameter("command") === "phaser") {
             var amount = parseInt(ui.parameter("amount"), 10);
             enemy = ui.variable("target");
-            if(this.e >= amount) {
+            if (this.e >= amount) {
                 distance = enemy.distance;
-                if(distance > this.maxPhaserRange) {
+                if (distance > this.maxPhaserRange) {
                     ui.writeLine("Klingon out of range of phasers at " + distance + " sectors...");
                 } else {
                     damage = amount - (((amount / 20) * distance / 200) + this.randomWithinLimitOf(200));
@@ -28,7 +28,7 @@ Game.prototype = {
                         damage = 1;
                     }
                     ui.writeLine("Phasers hit Klingon at " + distance + " sectors with " + damage + " units");
-                    if(damage < enemy.energy) {
+                    if (damage < enemy.energy) {
                         enemy.energy = enemy.energy - damage;
                         ui.writeLine("Klingon has " + enemy.energy + " remaining");
                     } else {

@@ -39,9 +39,7 @@
     test("EnergyExpendedEvenWhenPhasersFiredWhileKlingonOutOfRange", function() {
         // given
         var outOfRange = this.game.maxPhaserRange + 1;
-        var klingon = new Klingon();
-        klingon.distance = outOfRange;
-        this.ui.target = klingon;
+        this.ui.target = new Klingon(outOfRange);
         this.ui.commandParameter = 1000;
         var energyBefore = this.game.e;
 
@@ -55,9 +53,7 @@
 
     test("PhasersFiredKlingonDestroyed", function() {
         // given
-        var klingon = new Klingon();
-        klingon.distance = 2000;
-        klingon.energy = 200;
+        var klingon = new Klingon(2000, 200);
         sinon.spy(klingon, "destroy");
         this.ui.target = klingon;
         this.ui.commandParameter = 1000;
@@ -78,10 +74,7 @@
         // given
         var minimalFired = 0;
         var minimalHit = 1;
-        var klingon = new Klingon();
-        klingon.distance = 2000;
-        klingon.energy = 200;
-        this.ui.target = klingon;
+        this.ui.target = new Klingon(2000, 200);
         this.ui.commandParameter = minimalFired;
         sinon.stub(this.game, "generator").returns(0);
 
