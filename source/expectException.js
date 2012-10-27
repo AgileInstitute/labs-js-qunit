@@ -1,5 +1,5 @@
 // Note: this implementation is sufficient for use in this particular project, it is NOT meant for general reuse
-// var qunitTest = test;
+var qunitTest = test;
 var test = function(name, testFunction) {
     qunitTest(name, function() {
         try {
