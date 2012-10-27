@@ -10,12 +10,12 @@
   <div id="qunit-fixture"></div>
   <script src="../../../lib/qunit.js"></script>
   <script src="../../../lib/qunit-close-enough.js"></script>
+  <script src="../../expectFailure.js"></script>
   <script src="currencyConverter.js"></script>
   <script>
 
-    module("currencyConverter.3");
+    module("currencyConverter.4");
 
-    // Begin slide 95 (a.  Refactor Away the Duplication)
     test("givesSameValueWhenSameCurrencyRequested", function() {
         // given
         var converter = new CurrencyConverter();
@@ -28,7 +28,20 @@
         // then
         QUnit.close(converted, sameValue, 0.00004, "converted");
     });
-    // End slide 95
+
+    // Begin slide 98 (Technique: "Triangulation")
+    test("givesZeroWhenValueIsZero", function() {
+        // given
+        var converter = new CurrencyConverter();
+        var zero = 0.0000;
+
+        // when
+        var converted = converter.convert(zero, "USD", "EUR");
+
+        // then
+        QUnit.close(converted, zero, 0.00004, "expectedFailure");
+    });
+    // End slide 98
 
   </script>
 </body>

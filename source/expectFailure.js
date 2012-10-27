@@ -3,8 +3,11 @@ var test = function(name, testFunction) {
     qunitTest(name, function() {
         testFunction();
         var assertion = QUnit.config.current.assertions.pop();
-        ok(assertion.message.indexOf("<span class='test-message'>expectedFailure</span>") >= 0, "message");
-        equal(assertion.result, false, "failed");
+        if(assertion.message.indexOf("<span class='test-message'>expectedFailure</span>") >= 0) {
+            equal(assertion.result, false, "failed");
+        } else {
+            QUnit.config.current.assertions.push(assertion);
+        }
     });
 };
 
