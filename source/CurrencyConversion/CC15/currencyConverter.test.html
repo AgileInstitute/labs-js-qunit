@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>currencyConverter.test</title>
+  <link rel="stylesheet" href="../../../lib/qunit.css">
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script src="../../../lib/qunit.js"></script>
+  <script src="../../../lib/qunit-close-enough.js"></script>
+  <script src="currencyConverter.js"></script>
+  <script>
+
+    module("currencyConverter.15", {
+        setup: function() {
+            var rates = new ConversionRates();
+            rates.putRate("USD", "EUR", 0.5000);
+            this.converter = new CurrencyConverter(rates);
+        }
+    });
+
+    test("givesSameValueWhenSameCurrencyRequested", function() {
+        // given
+        var sameCurrency = "USD";
+        var sameValue = 100.0000;
+
+        // when
+        var converted = this.converter.convert(sameValue, sameCurrency, sameCurrency);
+
+        // then
+        QUnit.close(converted, sameValue, 0.00004, "converted");
+    });
+
+    test("givesZeroWhenValueIsZero", function() {
+        // given
+        var zero = 0.0000;
+
+        // when
+        var converted = this.converter.convert(zero, "USD", "EUR");
+
+        // then
+        QUnit.close(converted, zero, 0.00004, "converted");
+    });
+
+    test("convertsDollarsToEuros", function() {
+      // when
+      var converted = this.converter.convert(100.0000, "USD", "EUR");
+
+      // then
+      QUnit.close(converted, 50.0000, 0.00004, "converted");
+    });
+
+
+    module("conversionRates.15");
+
+    test("storesAndRetrievesRates", function() {
+        // given
+        var rates = new ConversionRates();
+        var from = "USD";
+        var to = "EUR";
+        var rate = 0.7424;
+
+        // when
+        rates.putRate(from, to, rate);
+
+        // then
+        QUnit.close(rates.getRate(from, to), rate, 0.00004, "getRate");
+    });
+
+    // Begin slide 126 (An Alternative Syntax)
+    test("throwsExceptionIfRateNotFound", function() {
+        // given
+        var rates = new ConversionRates();
+        var from = "BAR";
+        var to = "BAZ";
+
+        // when + then
+        QUnit.throws(function() { rates.getRate(from, to); }, /rate not found/, "throws");
+    });
+    // End slide 126
+  </script>
+</body>
+</html>
