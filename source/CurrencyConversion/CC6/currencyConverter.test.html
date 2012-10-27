@@ -13,17 +13,20 @@
   <script src="currencyConverter.js"></script>
   <script>
 
-    module("currencyConverter.5");
+      // Begin slide 101 (@Before Runs Before Each Test)
+    module("currencyConverter.6", {
+        setup: function() {
+            this.converter = new CurrencyConverter();
+        }
+    });
 
-    // Begin slide 100 (Maintain the Tests)
     test("givesSameValueWhenSameCurrencyRequested", function() {
         // given
-        var converter = new CurrencyConverter();
         var sameCurrency = "USD";
         var sameValue = 100.0000;
 
         // when
-        var converted = converter.convert(sameValue, sameCurrency, sameCurrency);
+        var converted = this.converter.convert(sameValue, sameCurrency, sameCurrency);
 
         // then
         QUnit.close(converted, sameValue, 0.00004, "converted");
@@ -31,16 +34,15 @@
 
     test("givesZeroWhenValueIsZero", function() {
         // given
-        var converter = new CurrencyConverter();
         var zero = 0.0000;
 
         // when
-        var converted = converter.convert(zero, "USD", "EUR");
+        var converted = this.converter.convert(zero, "USD", "EUR");
 
         // then
         QUnit.close(converted, zero, 0.00004, "converted");
     });
-  // End slide 100
+  // End slide 101
 
   </script>
 </body>
