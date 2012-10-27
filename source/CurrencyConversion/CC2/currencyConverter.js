@@ -1,10 +1,10 @@
 CurrencyConverter = function() {
 };
 
-// Begin slide 92 ("Thank You, But..")
+// Begin slide 93 ("...I Want to See it Fail Successfully")
 CurrencyConverter.prototype = {
     convert: function(value, from, to) {
-        throw "D'oh! convert() not YET implemented!";
+        return 0.0;
     }
 };
-//End slide 92
+//End slide 93

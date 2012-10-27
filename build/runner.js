@@ -103,8 +103,11 @@ function addLogging() {
 				}
 				response += 'expected: ' + details.expected + ', but was: ' + details.actual;
 			}
-			module.tests.push({ moduleName: currentModuleName, name: details.message, result: details.result, message: response });
-			if(!details.result) ++module.failureCount;
+            var ignore = !details.result && details.message.indexOf(": expectedFailure") >= 0;
+            if(!ignore) {
+                module.tests.push({ moduleName: currentModuleName, name: details.message, result: details.result, message: response });
+                if(!details.result) ++module.failureCount;
+            }
 		});
 
 		QUnit.done(function(result){
