@@ -1,0 +1,42 @@
+<!Doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>stockQuote.dependencyInjection.test</title>
+    <link rel="stylesheet" href="../../lib/qunit.css">
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+<script src="../../lib/qunit.js"></script>
+<script src="../../lib/sinon.js"></script>
+<script src="../LunEx/lunExServices.js"></script>
+<script>
+    // Begin slide 158 (Good Idea: Dependency Injection)
+    StockQuote = function (symbol, numberOfShares, lunexServices) {
+        this.symbol = symbol;
+        this.numberOfShares = numberOfShares;
+        this.myLunExServices = lunexServices;
+    };
+    // End slide 158
+    StockQuote.prototype = {
+        currentPrice: function () {
+            return this.numberOfShares * this.myLunExServices.currentPrice(this.symbol);
+        }
+    };
+    module("stockQuote.usingNew");
+    test("currentPrice", function () {
+        // given
+        var lunExServices = new LunExServices();
+        sinon.stub(lunExServices, "currentPrice").returns(45);
+        var stockQuote = new StockQuote("ADBE", 10, lunExServices);
+
+        // when
+        var price = stockQuote.currentPrice();
+
+        // then
+        equal(price, 450, "price");
+    });
+</script>
+</body>
+</html>
