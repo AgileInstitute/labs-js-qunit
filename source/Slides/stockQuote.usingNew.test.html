@@ -1,0 +1,44 @@
+<!Doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>stockQuote.usingNew.test</title>
+    <link rel="stylesheet" href="../../lib/qunit.css">
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+<script src="../../lib/qunit.js"></script>
+<script src="../expectFailure.js"></script>
+<script src="../LunEx/lunExServices.js"></script>
+<script>
+    // Begin slide 156 (Anything Wrong with This?)
+    StockQuote = function (symbol, numberOfShares) {
+        this.symbol = symbol;
+        this.numberOfShares = numberOfShares;
+        this.myLunExServices = new LunExServices();
+    };
+    // End slide 156
+    StockQuote.prototype = {
+        currentPrice: function () {
+            return this.numberOfShares * this.myLunExServices.currentPrice(this.symbol);
+        }
+    };
+    module("stockQuote.usingNew");
+    test("currentPrice", function () {
+        // given
+        var stockQuote = new StockQuote("ADBE", 10);
+
+        // when
+        var price = stockQuote.currentPrice();
+
+        // then
+        try {
+            equal(price, 4711, "expectedFailure");
+        } catch (e) {
+            // happens sometimes, ignore it for now :-(
+        }
+    });
+</script>
+</body>
+</html>
