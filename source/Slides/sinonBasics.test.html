@@ -1,0 +1,57 @@
+<!Doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>sinonBasics.test</title>
+    <link rel="stylesheet" href="../../lib/qunit.css">
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+<script src="../../lib/qunit.js"></script>
+<script>
+    var ObjectUnderTest = function (service) {
+        this.service = service;
+    };
+    ObjectUnderTest.prototype = {
+        baz: function (arg) {
+            return this.service.foo() / (arg.length + 1);
+        }
+    };
+    var DependencyInterface = function () {
+
+    };
+    DependencyInterface.prototype = {
+        foo: function () {
+            sleep(5000);
+            return 84;
+        }
+    };
+    sleep = function (delay) {
+        var startTime = new Date();
+        var endTime = null;
+        do {
+            endTime = new Date();
+        } while ((endTime - startTime) < delay);
+    }
+</script>
+<script>
+    // Begin slide 153 (Mockito basics)
+</script>
+<script src="../../lib/sinon.js"></script>
+<script>
+    module("sinonBasics");
+    test("baz", function () {
+        // given
+        var myService = new DependencyInterface();
+        sinon.stub(myService, "foo").returns(42);
+        var bar = new ObjectUnderTest(myService);
+
+        // when + then
+        equal(bar.baz("xyzzy"), 7, "baz");
+        ok(myService.foo.calledOnce, "foo called");
+    });
+    // End slide 153
+</script>
+</body>
+</html>

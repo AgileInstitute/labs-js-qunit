@@ -14,6 +14,7 @@ CurrencyConverter.prototype = {
     }
 };
 
+
 ConversionRates = function() {
     this.rates = [];
 };
