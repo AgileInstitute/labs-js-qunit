@@ -23,15 +23,11 @@
         return this.shares * currentPrice - this.cost;
     };
 
-    gainForLot = function(lot, currentPrice) {
-        return lot.gainAt(currentPrice);
-    };
-
     totalGain = function(lots, currentPrice) {
         var total = 0.00;
         for(var i = 0; i < lots.length; ++i) {
             var lot = lots[i];
-            total += gainForLot(lot, currentPrice);
+            total += lot.gainAt(currentPrice);
         }
         return total;
     };
