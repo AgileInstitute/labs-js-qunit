@@ -24,11 +24,14 @@
         }
     });
 
-    asyncTest("getProduct", 2, function() {
+    // important: use asyncTest
+    asyncTest("getProduct", function() {
         // given
         $.mockjax({
+            // mockjax input
             url: '/product',
             data: { productId: 4711},
+            // mockjax output
             responseText: { error: false, product: { name: 'Lars'}},
             responseTime: 1
         });
@@ -39,11 +42,11 @@
             // then
             ok(!error, 'error');
             equal(product.name, 'Lars', 'product.name');
-            start();
+            start(); // important for asyncTest, must be called in final callback
         });
     });
 
-    asyncTest("getProduct-missing", 2, function() {
+    asyncTest("getProduct when server returns an error", function() {
         // given
         $.mockjax({
             url: '/product',
@@ -62,7 +65,7 @@
         });
     });
 
-    asyncTest("getProduct-server-missing", 2, function() {
+    asyncTest("getProduct when server unresponsive", function() {
         // when
         this.model.getProduct(17, function(error, product) {
 
