@@ -14,15 +14,15 @@
         this.service = service;
     };
     ObjectUnderTest.prototype = {
-        baz: function (arg) {
-            return this.service.foo() / (arg.length + 1);
+        myMethodToTest: function (arg) {
+            return this.service.serviceMethod() / ( arg === "six" ? 6 : arg.length);
         }
     };
-    var DependencyInterface = function () {
+    var ServiceInterface = function () {
 
     };
-    DependencyInterface.prototype = {
-        foo: function () {
+    ServiceInterface.prototype = {
+        serviceMethod: function () {
             sleep(5000);
             return 84;
         }
@@ -41,17 +41,19 @@
 <script src="../../lib/sinon.js"></script>
 <script>
     module("sinonBasics");
-    test("baz", function () {
+    test("myMethodToTest", function () {
         // given
-        var myService = new DependencyInterface();
-        sinon.stub(myService, "foo").returns(42);
-        var bar = new ObjectUnderTest(myService);
+        var myService = new ServiceInterface();
+        sinon.stub(myService, "serviceMethod").returns(42);
+        var myObjectToTest = new ObjectUnderTest(myService);
 
         // when + then
-        equal(bar.baz("xyzzy"), 7, "baz");
-        ok(myService.foo.calledOnce, "foo called");
+        equal(myObjectToTest.myMethodToTest("six"), 7, "myMethodToTest");
+        ok(myService.serviceMethod.calledOnce, "serviceMethod called");
     });
-    // End slide 153
+</script>
+<script>
+// End slide 153
 </script>
 </body>
 </html>
