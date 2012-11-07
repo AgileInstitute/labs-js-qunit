@@ -61,5 +61,25 @@ Model.prototype = {
                 }
             });
         }
+    },
+
+    getProductsNonRecursive: function (productIds, callback) {
+        var products = [];
+        var errors = [];
+        var i;
+        var getProductCallback = function(error, product) {
+            if(error) {
+                errors.push(error);
+                products.push(null);
+            } else {
+                products.push(product);
+            }
+            if(products.length === productIds.length) { // Note: now we've got them all
+                callback(errors.length === 0 ? null : errors, products);
+            }
+        };
+        for(i = 0; i < productIds.length; i += 1) {
+            this.getProduct(productIds[i], getProductCallback);
+        }
     }
 };

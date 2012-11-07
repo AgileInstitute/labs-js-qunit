@@ -24,7 +24,37 @@
         }
     });
 
-    // important: use asyncTest
+    asyncTest("getProductsNonRecursive", function () {
+        // given
+        $.mockjax({
+            // mockjax input
+            url: '/product',
+            data: { productId: 42},
+            // mockjax output
+            responseText: { error: false, product: { name: 'apple'}},
+            responseTime: 1
+        });
+        $.mockjax({
+            // mockjax input
+            url: '/product',
+            data: { productId: 48},
+            // mockjax output
+            responseText: { error: false, product: { name: 'orange'}},
+            responseTime: 1
+        });
+
+        // when
+        this.model.getProductsNonRecursive([42, 48], function (error, products) {
+
+            // then
+            ok(!error, 'error');
+            equal(products[0].name, 'apple', 'order.products[0].name');
+            equal(products[1].name, 'orange', 'order.products[1].name');
+            equal(products.length, 2, 'order.products.length');
+            start(); // important for asyncTest, must be called in final callback
+        });
+    });
+
     asyncTest("getProducts", function () {
         // given
         $.mockjax({
@@ -56,7 +86,6 @@
         });
     });
 
-    // important: use asyncTest
     asyncTest("getOrder", function () {
         // given
         $.mockjax({
@@ -95,37 +124,6 @@
             start(); // important for asyncTest, must be called in final callback
         });
     });
-    /*
-    asyncTest("getProduct when server returns an error", function () {
-        // given
-        $.mockjax({
-            url: '/product',
-            data: { productId: 17},
-            responseText: { error: { message: "product with id 17 not found"}},
-            responseTime: 1
-        });
-
-        // when
-        this.model.getProduct(17, function (error, product) {
-
-            // then
-            ok(error, 'error');
-            equal(error.message, "product with id 17 not found", 'error.message');
-            start();
-        });
-    });
-
-    asyncTest("getProduct when server unresponsive", function () {
-        // when
-        this.model.getProduct(17, function (error, product) {
-
-            // then
-            ok(error, "error");
-            equal(error.message, "server connection failed", "error.message");
-            start();
-        });
-    });
-    */
   </script>
 </body>
 </html>
