@@ -1,0 +1,48 @@
+<!Doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>moveMethod.after.test</title>
+    <link rel="stylesheet" href="../../lib/qunit.css">
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+<script src="../../lib/qunit.js"></script>
+<script>
+
+    module("inlineVariable.after");
+
+    Lot = function(shares, cost) {
+        this.shares = shares;
+        this.cost = cost;
+    };
+
+    Lot.prototype.gainWhenPriceIs = function(currentPrice) {
+        return this.shares * currentPrice - this.cost;
+    };
+
+    // Begin slide
+    totalGain = function(lots, currentPrice) {
+        var total = 0.00;
+        for(var i = 0; i < lots.length; ++i) {
+            total += lots[i].gainWhenPriceIs(currentPrice);
+        }
+        return total;
+    };
+    // End slide
+
+    test("totalGain", function() {
+        // given
+        var lots = [ new Lot(10, 200), new Lot(20, 300)];
+
+        // when
+        var gain = totalGain(lots, 40);
+
+        // then
+        equal(gain, 700, "gain");
+    });
+
+</script>
+</body>
+</html>
