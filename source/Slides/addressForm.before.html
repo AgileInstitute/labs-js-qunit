@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="../../lib/jquery.js"></script>
+<script>
+    $(function() {
+        $('.new_address_form').hide();
+        $('.countrySelect').change(function() {
+            $('.new_address_form').hide();
+            var country = $(".countrySelect").val();
+            if (country === "JP") {
+                $('.address_jp').show();
+            }
+            else {
+                $('.address_generic').show();
+            }
+        });
+    });
+</script>
+</head>
+<body>
+<form>
+    <select class="countrySelect" data-placeholder="Choose a Country...">
+        <option value=""></option><!-- the top option is null value. -->
+        <option value="JP">Japan</option>
+        <option value="US">United States</option>
+    </select>
+
+    <fieldset class="new_address_form address_jp">
+        <span>Japan</span>
+    </fieldset>
+
+    <fieldset class="new_address_form address_generic">
+        <span>Generic</span>
+    </fieldset>
+</form>
+</body>
+</html>
+
