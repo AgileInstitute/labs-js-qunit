@@ -124,6 +124,26 @@
             start(); // important for asyncTest, must be called in final callback
         });
     });
+
+    QUnit.config.testTimeout = 2000;
+    asyncTest("getProduct when server returns an error", function () {
+        // given
+        $.mockjax({
+            url: '/product',
+            data: { productId: 17},
+            responseText: { error: { message: "product with id 17 not found"}},
+            responseTime: 1
+        });
+
+        // when
+        this.model.getProduct(17, function (error, product) {
+
+            // then
+            ok(error, 'error');
+            equal(error.message, "product with id 17 not found", 'error.message');
+            start();
+        });
+    });
   </script>
 </body>
 </html>
