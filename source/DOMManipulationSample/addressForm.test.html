@@ -2,45 +2,51 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>QUnit Example</title>
+  <title>addressForm.test</title>
   <link rel="stylesheet" href="../../lib/qunit.css">
 </head>
 <body>
   <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
   <script src="../../lib/qunit.js"></script>
   <script src="../../lib/jquery.js"></script>
   <script src="addressForm.js"></script>
   <script>
+      module("addressForm", {
+          setup: function() {
+              this.$fixture = $('#qunit-fixture');
+          }
+      });
       test( "if user selects japan then only Japanese fieldset is shown", function() {
-          var fixture = $("#japaneseAndOtherFixture");
-          $(".countrySelect", fixture).val("JP");
-           onCountryChange(fixture);
+          this.$fixture.html($("#japaneseAndOtherFixture").text());
+          $("#countrySelect", this.$fixture).val("JP");
+           onCountryChange(this.$fixture);
            equal(
-                 $(".new_address_form:visible", fixture).length, 1,
+                 $(".new_address_form:visible", this.$fixture).length, 1,
                  "Expected all but one fieldset to be hidden"
                  );
            equal(
-                 $(".address_jp:visible", fixture).length, 1,
+                 $(".address_jp:visible", this.$fixture).length, 1,
                  "Expected address_jp to be visible"
                  );
            });
       test( "if user selects Narnia then only default fieldset is shown", function() {
-          var fixture = $("#narniaWithNoCustomFieldsetAndDefaultFixture");
-           $(".countrySelect", fixture).val("$$");
-           onCountryChange(fixture);
+           this.$fixture.html($("#narniaWithNoCustomFieldsetAndDefaultFixture").text());
+           $("#countrySelect", this.$fixture).val("$$");
+           onCountryChange(this.$fixture);
            equal(
-                 $(".new_address_form:visible", fixture).length, 1,
+                 $(".new_address_form:visible", this.$fixture).length, 1,
                  "Expected all but one fieldset to be hidden"
                  );
            equal(
-                 $(".address_generic:visible", fixture).length, 1,
+                 $(".address_generic:visible", this.$fixture).length, 1,
                  "Expected generic fieldset to be visible"
                  );
            });
 	</script>
-  <div id="japaneseAndOtherFixture">
+  <script type="text/plain" id="japaneseAndOtherFixture">
       <form>
-          <select class="countrySelect" data-placeholder="Choose a Country…">
+          <select id="countrySelect" data-placeholder="Choose a Country…">
               <option value=""></option><!-- the top option is null value. -->
               <option value="JP">Japan</option>
               <option value="US">United States</option>
@@ -52,10 +58,10 @@
           <fieldset class="new_address_form address_us">
           </fieldset>
       </form>
-  </div>
-  <div id="narniaWithNoCustomFieldsetAndDefaultFixture">
+  </script>
+  <script type="text/plain" id="narniaWithNoCustomFieldsetAndDefaultFixture">
       <form>
-          <select class="countrySelect" data-placeholder="Choose a Country…">
+          <select id="countrySelect" data-placeholder="Choose a Country…">
               <option value=""></option><!-- the top option is null value. -->
               <option value="US">United States</option>
               <option value="$$">Narnia</option>
@@ -67,6 +73,6 @@
           <fieldset class="new_address_form address_generic">
           </fieldset>
       </form>
-  </div>
+  </script>
 </body>
 </html>
