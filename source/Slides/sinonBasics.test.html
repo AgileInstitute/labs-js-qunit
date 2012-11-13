@@ -55,5 +55,38 @@
 <script>
 // End slide 153
 </script>
+<script>
+    EmailService = function() {
+    };
+
+    EmailService.prototype = {
+        sendEmail: function(message) {
+            alert(message);
+        }
+    };
+
+    Notifier = function() {
+        this.emailService = new EmailService();
+    };
+
+    Notifier.prototype = {
+        trigger: function(message) {
+            this.emailService.sendEmail(message);
+        }
+    };
+
+    test("constructor", function() {
+        // given
+        sinon.stub(EmailService.prototype, "sendEmail");
+        var notifier = new Notifier(this.emailService);
+
+        // when
+        notifier.trigger("hello");
+
+        // then
+        equal(EmailService.prototype.sendEmail.callCount, 1, "sendEmail.callCount");
+        equal(EmailService.prototype.sendEmail.args[0], "hello", "sendEmail.args[0]");
+    });
+</script>
 </body>
 </html>
