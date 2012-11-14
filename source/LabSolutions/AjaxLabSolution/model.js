@@ -7,7 +7,7 @@ Model.prototype = {
             "/product",
             {productId : productId},
             function(response) {
-                return response.product
+                return response.product;
             },
             callback);
     },
