@@ -57,11 +57,11 @@
 </script>
 <script>
     EmailService = function() {
+        alert('Establishing connection...');
     };
 
     EmailService.prototype = {
         sendEmail: function(message) {
-            alert(message);
         }
     };
 
@@ -77,8 +77,11 @@
 
     test("constructor", function() {
         // given
-        sinon.stub(EmailService.prototype, "sendEmail");
-        var notifier = new Notifier(this.emailService);
+        EmailService = function() {};
+        EmailService.prototype = {
+            sendEmail: sinon.spy()
+        };
+        var notifier = new Notifier();
 
         // when
         notifier.trigger("hello");
