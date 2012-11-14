@@ -91,5 +91,40 @@ Model.prototype = {
         for(i = 0; i < productIds.length; i += 1) {
             this.getProduct(productIds[i], getProductCallback);
         }
+    },
+
+    getProductPromise: function(productId)
+    {
+        return this.getSomethingPromise(
+            "/product",
+            {productId : productId},
+            function(response) {
+                return response.product;
+            }
+        );
+    },
+
+    getSomethingPromise: function(url, data, getResult) {
+        var promise = jQuery.ajax(url, {data: data}).pipe(function(response) {
+            if(response.error) {
+                return $.Deferred().reject(response.error);
+            }
+            return getResult(response);
+        },function(){
+            return $.Deferred().reject(new Error("server connection failed"));
+        });
+        return promise;
+    },
+
+    getProductsPromise: function (productIds) {
+        var productPromises = [];
+        for(i = 0; i < productIds.length; i += 1) {
+            var productPromise = this.getProductPromise(productIds[i]);
+            productPromises.push(productPromise);
+        }
+        var productsPromise = $.when.apply($, productPromises).pipe(function() {
+            return Array.prototype.slice.call(arguments, 0);
+        });
+        return productsPromise;
     }
 };

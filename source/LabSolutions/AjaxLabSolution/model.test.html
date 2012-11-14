@@ -24,6 +24,104 @@
         }
     });
 
+    asyncTest("getProductsPromise", function () {
+        // given
+        $.mockjax({
+            // mockjax input
+            url: '/product',
+            data: { productId: 42},
+            // mockjax output
+            responseText: { error: false, product: { name: 'apple'}},
+            responseTime: 1
+        });
+        $.mockjax({
+            // mockjax input
+            url: '/product',
+            data: { productId: 48},
+            // mockjax output
+            responseText: { error: false, product: { name: 'orange'}},
+            responseTime: 1
+        });
+
+        // when
+        var productsPromise = this.model.getProductsPromise([42, 48]);
+
+        // then
+        productsPromise.fail(function (error) {
+            equal(error, null, "error");
+            start();
+        });
+        productsPromise.done(function (products) {
+            equal(products[0].name, 'apple', 'order.products[0].name');
+            equal(products[1].name, 'orange', 'order.products[1].name');
+            equal(products.length, 2, 'order.products.length');
+            start();
+        });
+    });
+
+    asyncTest("getProductPromise", function () {
+        // given
+        $.mockjax({
+            // mockjax input
+            url: '/product',
+            data: { productId: 4711},
+            // mockjax output
+            responseText: { error: false, product: { name: 'Lars'}},
+            responseTime: 1
+        });
+
+        // when
+        var productPromise = this.model.getProductPromise(4711);
+
+        // then
+        productPromise.fail(function (error) {
+            equal(error, null, 'error');
+            start();
+        });
+        productPromise.done(function (product) {
+            equal(product.name, 'Lars', 'product.name');
+            start();
+        });
+    });
+
+    asyncTest("getProductPromise when server returns an error", function () {
+        // given
+        $.mockjax({
+            url: '/product',
+            data: { productId: 17},
+            responseText: { error: { message: "product with id 17 not found"}},
+            responseTime: 1
+        });
+
+        // when
+        var productPromise = this.model.getProductPromise(17);
+
+        // then
+        productPromise.fail(function (error) {
+            equal(error.message, "product with id 17 not found", 'error.message');
+            start();
+        });
+        productPromise.done(function (product) {
+            ok(false, 'fail');
+            start();
+        });
+    });
+
+    asyncTest("getProductPromise when server unresponsive", function () {
+        // when
+        var productPromise = this.model.getProductPromise(17);
+
+        // then
+        productPromise.fail(function (error) {
+            equal(error.message, "server connection failed", 'error.message');
+            start();
+        });
+        productPromise.done(function (product) {
+            ok(false, 'fail');
+            start();
+        });
+    });
+
     asyncTest("getProductsNonRecursive", function () {
         // given
         $.mockjax({
