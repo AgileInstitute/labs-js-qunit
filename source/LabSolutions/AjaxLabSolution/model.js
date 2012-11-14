@@ -2,14 +2,24 @@ Model = function () {
 };
 
 Model.prototype = {
-    getProduct: function (productId, callback) {
-        jQuery.ajax("/product", {
-            data: { productId : productId },
+    getProduct: function(productId, callback) {
+        this.getSomething(
+            "/product",
+            {productId : productId},
+            function(response) {
+                return response.product
+            },
+            callback);
+    },
+
+    getSomething: function(url, data, getResult, callback) {
+        jQuery.ajax(url, {
+            data: data,
             success: function(response) {
-                if (response.error) {
+                if(response.error) {
                     callback(response.error);
                 } else {
-                    callback(null, response.product);
+                    callback(null, getResult(response));
                 }
             },
             error: function() {
@@ -19,14 +29,14 @@ Model.prototype = {
     },
 
     getOrder: function (orderId, callback) {
-        var that = this;
+        var self = this;
         jQuery.ajax("/order", {
             data: { orderId : orderId },
             success: function (response) {
                 if (response.error) {
                     callback(response.error);
                 } else {
-                    that.getProducts(response.order.productIds, function (error, products) {
+                    self.getProducts(response.order.productIds, function (error, products) {
                         if (error) {
                             callback(error);
                         } else {
@@ -45,12 +55,12 @@ Model.prototype = {
         if (productIds.length === 0) {
             callback(null, []);
         } else {
-            var that = this;
+            var self = this;
             this.getProduct(productIds[0], function (error, product) {
                 if (error) {
                     callback(error);
                 } else {
-                    that.getProducts(productIds.slice(1), function (error, products) {
+                    self.getProducts(productIds.slice(1), function (error, products) {
                         if (error) {
                             callback(error);
                         } else {
