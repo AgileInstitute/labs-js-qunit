@@ -32,7 +32,7 @@
             url: '/product',
             data: { productId: 4711},
             // mockjax output
-            responseText: { error: false, product: { name: 'Lars'}},
+            responseText: { error: false, product: { name: 'banana'}},
             responseTime: 1
         });
 
@@ -41,7 +41,7 @@
 
             // then
             ok(!error, 'error');
-            equal(product.name, 'Lars', 'product.name');
+            equal(product.name, 'banana', 'product.name');
             start(); // important for asyncTest, must be called in final callback
         });
     });

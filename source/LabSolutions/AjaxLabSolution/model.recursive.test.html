@@ -1,0 +1,60 @@
+<!Doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>model.recursive.test</title>
+  <link rel="stylesheet" href="../../../lib/qunit.css">
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script src="../../../lib/qunit.js"></script>
+  <script src="../../../lib/jquery.js"></script>
+  <script src="../../../lib/jquery.mockjax.js"></script>
+  <script src="model.recursive.js"></script>
+  <script>
+
+    module("model.recursive", {
+        setup: function () {
+			// given
+            this.model = new Model();
+        },
+        teardown: function () {
+            $.mockjaxClear();
+        }
+    });
+
+    asyncTest("getProducts", function () {
+        // given
+        $.mockjax({
+            // mockjax input
+            url: '/product',
+            data: { productId: 42},
+            // mockjax output
+            responseText: { error: false, product: { name: 'apple'}},
+            responseTime: 1
+        });
+        $.mockjax({
+            // mockjax input
+            url: '/product',
+            data: { productId: 48},
+            // mockjax output
+            responseText: { error: false, product: { name: 'orange'}},
+            responseTime: 1
+        });
+
+        // when
+        this.model.getProducts([42, 48], function (error, products) {
+
+            // then
+            ok(!error, 'error');
+            equal(products[0].name, 'apple', 'order.products[0].name');
+            equal(products[1].name, 'orange', 'order.products[1].name');
+            equal(products.length, 2, 'order.products.length');
+            start(); // important for asyncTest, must be called in final callback
+        });
+    });
+
+  </script>
+</body>
+</html>

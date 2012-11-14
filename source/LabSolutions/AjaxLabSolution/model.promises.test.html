@@ -1,0 +1,127 @@
+<!Doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>model.promises.test</title>
+  <link rel="stylesheet" href="../../../lib/qunit.css">
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script src="../../../lib/qunit.js"></script>
+  <script src="../../../lib/jquery.js"></script>
+  <script src="../../../lib/jquery.mockjax.js"></script>
+  <script src="model.promises.js"></script>
+  <script>
+
+    module("model", {
+        setup: function () {
+			// given
+            this.model = new Model();
+        },
+        teardown: function () {
+            $.mockjaxClear();
+        }
+    });
+
+    asyncTest("getProducts", function () {
+        // given
+        $.mockjax({
+            // mockjax input
+            url: '/product',
+            data: { productId: 42},
+            // mockjax output
+            responseText: { error: false, product: { name: 'apple'}},
+            responseTime: 1
+        });
+        $.mockjax({
+            // mockjax input
+            url: '/product',
+            data: { productId: 48},
+            // mockjax output
+            responseText: { error: false, product: { name: 'orange'}},
+            responseTime: 1
+        });
+
+        // when
+        var products = this.model.getProducts([42, 48]);
+
+        // then
+        products.fail(function (error) {
+            equal(error, null, "error");
+            start();
+        });
+        products.done(function (products) {
+            equal(products[0].name, 'apple', 'order.products[0].name');
+            equal(products[1].name, 'orange', 'order.products[1].name');
+            equal(products.length, 2, 'order.products.length');
+            start();
+        });
+    });
+
+    asyncTest("getProduct", function () {
+        // given
+        $.mockjax({
+            // mockjax input
+            url: '/product',
+            data: { productId: 4711},
+            // mockjax output
+            responseText: { error: false, product: { name: 'banana'}},
+            responseTime: 1
+        });
+
+        // when
+        var product = this.model.getProduct(4711);
+
+        // then
+        product.fail(function (error) {
+            equal(error, null, 'error');
+            start();
+        });
+        product.done(function (product) {
+            equal(product.name, 'banana', 'product.name');
+            start();
+        });
+    });
+
+    asyncTest("getProduct when server returns an error", function () {
+        // given
+        $.mockjax({
+            url: '/product',
+            data: { productId: 17},
+            responseText: { error: { message: "product with id 17 not found"}},
+            responseTime: 1
+        });
+
+        // when
+        var product = this.model.getProduct(17);
+
+        // then
+        product.fail(function (error) {
+            equal(error.message, "product with id 17 not found", 'error.message');
+            start();
+        });
+        product.done(function (product) {
+            ok(false, 'fail');
+            start();
+        });
+    });
+
+    asyncTest("getProduct when server unresponsive", function () {
+        // when
+        var product = this.model.getProduct(17);
+
+        // then
+        product.fail(function (error) {
+            equal(error.message, "server connection failed", 'error.message');
+            start();
+        });
+        product.done(function (product) {
+            ok(false, 'fail');
+            start();
+        });
+    });
+
+  </script>
+</body>
+</html>
