@@ -48,7 +48,7 @@
 
         // then
         products.fail(function (error) {
-            equal(error, null, "error");
+            ok(false, error);
             start();
         });
         products.done(function (products) {
@@ -75,7 +75,7 @@
 
         // then
         product.fail(function (error) {
-            equal(error, null, 'error');
+            ok(false, error);
             start();
         });
         product.done(function (product) {
