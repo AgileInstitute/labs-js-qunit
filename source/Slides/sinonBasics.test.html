@@ -87,7 +87,7 @@
         var notifier = new Notifier();
 
         // then
-        equal(EmailService.callCount, 1, "new EmailService");
+        equal(EmailService.callCount, 1, "EmailService.callCount");
 
         // when
         notifier.trigger("hello");
