@@ -62,6 +62,7 @@
 
     EmailService.prototype = {
         sendEmail: function(message) {
+            alert('sending email...');
         }
     };
 
@@ -77,11 +78,16 @@
 
     test("constructor", function() {
         // given
-        EmailService = function() {};
+        EmailService = sinon.spy(); // Note: stub the constructor
         EmailService.prototype = {
             sendEmail: sinon.spy()
         };
+
+        // when
         var notifier = new Notifier();
+
+        // then
+        equal(EmailService.callCount, 1, "new EmailService");
 
         // when
         notifier.trigger("hello");
