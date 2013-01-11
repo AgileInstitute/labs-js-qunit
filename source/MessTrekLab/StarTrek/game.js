@@ -17,7 +17,7 @@ Game.prototype = {
             if(this.e >= amount) {
                 distance = enemy.distance;
                 if(distance > 4000) {
-                    ui.writeLine("Klingon out of range of phasers at " + distance + " sectors...");
+                    $("#dialogue").append("<p>" + "Klingon out of range of phasers at " + distance + " sectors..." + "</p>");
                 } else {
                     damage = amount - (((amount / 20) * distance / 200) + this.randomWithinLimitOf(200));
                     if (damage < 1) {
