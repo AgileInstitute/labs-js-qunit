@@ -23,39 +23,39 @@ Game.prototype = {
                     if (damage < 1) {
                         damage = 1;
                     }
-                    ui.writeLine("Phasers hit Klingon at " + distance + " sectors with " + damage + " units");
+                    $("#dialogue").append("<p>" + "Phasers hit Klingon at " + distance + " sectors with " + damage + " units" + "</p>");
                     if(damage < enemy.energy) {
                         enemy.energy = enemy.energy - damage;
-                        ui.writeLine("Klingon has " + enemy.energy + " remaining");
+                        $("#dialogue").append("<p>" + "Klingon has " + enemy.energy + " remaining" + "</p>");
                     } else {
-                        ui.writeLine("Klingon destroyed!");
+                        $("#dialogue").append("<p>" + "Klingon destroyed!" + "</p>");
                         enemy.destroy();
                     }
                 }
                 this.e -= amount;
             } else {
-                ui.writeLine("Insufficient energy to fire phasers!");
+                $("#dialogue").append("<p>" + "Insufficient energy to fire phasers!" + "</p>");
             }
         } else if(ui.parameter("command") === "photon") {
             enemy = ui.variable("target");
             if(this.t > 0) {
                 distance = enemy.distance;
                 if ((this.randomWithinLimitOf(4) + ((distance / 500) + 1) > 7)) {
-                    ui.writeLine("Torpedo missed Klingon at " + distance + " sectors...");
+                    $("#dialogue").append("<p>" + "Torpedo missed Klingon at " + distance + " sectors..." + "</p>");
                 } else {
                     damage = 800 + this.randomWithinLimitOf(50);
-                    ui.writeLine("Photons hit Klingon at " + distance + " sectors with " + damage + " units");
+                    $("#dialogue").append("<p>" + "Photons hit Klingon at " + distance + " sectors with " + damage + " units" + "</p>");
                     if (damage < enemy.energy) {
                         enemy.energy = enemy.energy - damage;
-                        ui.writeLine("Klingon has " + enemy.energy + " remaining");
+                        $("#dialogue").append("<p>" + "Klingon has " + enemy.energy + " remaining" + "</p>");
                     } else {
-                        ui.writeLine("Klingon destroyed!");
+                        $("#dialogue").append("<p>" + "Klingon destroyed!" + "</p>");
                         enemy.destroy();
                     }
                 }
                 this.t--;
             } else {
-                ui.writeLine("No more photon torpedoes!");
+                $("#dialogue").append("<p>" + "No more photon torpedoes!" + "</p>");
             }
         }
     }
