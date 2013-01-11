@@ -6,9 +6,7 @@ UserInterface = function(commandName, commandParameter, target) {
 
 UserInterface.prototype = {
     writeLine: function(message) {
-        var paragraph = $("<p></p>");
-        paragraph.text(message);
-        $("#dialogue").append(paragraph);
+        $("#dialogue").append("<p>" + message + "</p>");
     },
     parameter: function (parameterName) {
         if(parameterName === "command") {
