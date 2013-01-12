@@ -31,6 +31,6 @@ ConversionRates.prototype = {
         return rate;
     },
     key: function(from, to) {
-        return from + to;
+        return from + "." + to;
     }
 };

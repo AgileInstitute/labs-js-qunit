@@ -20,10 +20,10 @@ ConversionRates = function() {
 
 ConversionRates.prototype = {
     putRate: function(from, to, rate) {
-        this.rates[from + to] = rate;
+        this.rates[from + "." + to] = rate;
     },
     getRate: function(from, to) {
-        return this.rates[from + to];
+        return this.rates[from + "." + to];
     }
 };
 // End slide 113

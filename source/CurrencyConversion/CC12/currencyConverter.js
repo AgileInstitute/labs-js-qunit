@@ -26,7 +26,7 @@ ConversionRates.prototype = {
         return this.rates[this.key(from, to)];
     },
     key: function(from, to) {
-        return from + to;
+        return from + "." + to;
     }
 };
 // End slide 114

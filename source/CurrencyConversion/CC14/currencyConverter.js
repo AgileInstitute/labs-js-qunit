@@ -32,6 +32,6 @@ ConversionRates.prototype = {
     },
     // End slide 125
     key: function(from, to) {
-        return from + to;
+        return from + "." + to;
     }
 };
