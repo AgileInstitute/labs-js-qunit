@@ -14,6 +14,8 @@
     module("simple");
     test("add", function() {
         equal(simpleAdd(2, 2), 4, "basic math");
+    });
+    test("Array.concat", function() {
         deepEqual([[1,2]].concat([[3,4]]), [[1,2],[3,4]], "nested array");
     });
   </script>
