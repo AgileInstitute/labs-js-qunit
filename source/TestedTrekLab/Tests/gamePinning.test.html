@@ -25,7 +25,7 @@
         }
     });
 
-    test("PhasersFiredWithInsufficientEnergy", function() {
+    test("Phasers fired with insufficient energy", function() {
         // given
         this.ui.commandParameter = this.game.e + 1;
 
@@ -36,7 +36,7 @@
         equal(this.ui.writeLine.args[0], "Insufficient energy to fire phasers!", "message");
     });
 
-    test("EnergyExpendedEvenWhenPhasersFiredWhileKlingonOutOfRange", function() {
+    test("Energy expended even when phasers fired while klingon out of range", function() {
         // given
         var outOfRange = this.game.maxPhaserRange + 1;
         this.ui.target = new Klingon(outOfRange);
@@ -51,7 +51,7 @@
         equal(this.game.e, energyBefore - 1000, "energy deducted");
     });
 
-    test("PhasersFiredKlingonDestroyed", function() {
+    test("Phasers fired klingon destroyed", function() {
         // given
         var klingon = new Klingon(2000, 200);
         sinon.spy(klingon, "destroy");
@@ -70,7 +70,7 @@
         ok(klingon.destroy.calledOnce, "klingon destroyed");
     });
 
-    test("PhasersDamageOfZeroStillHits_AndNondestructivePhaserDamageDisplaysRemaining", function() {
+    test("Phasers damage of zero still hits, and nondestructive phaser damage displays remaining", function() {
         // given
         var minimalFired = 0;
         var minimalHit = 1;
@@ -98,7 +98,7 @@
         }
     });
 
-    test("NotifiedIfNoTorpedoesRemain", function() {
+    test("Notified if no torpedoes remain", function() {
         // given
         this.game.t = 0;
         this.ui.target = new Klingon();
@@ -110,7 +110,7 @@
         equal(this.ui.writeLine.args[0], "No more photon torpedoes!", "message");
     });
 
-    test("TorpedoMissesDueToRandomFactors", function() {
+    test("Torpedo misses due to random factors", function() {
         // given
         var distanceWhereRandomFactorsHoldSway = 3000;
         this.ui.target = new Klingon(distanceWhereRandomFactorsHoldSway, 200);
@@ -123,7 +123,7 @@
         equal(this.game.t, 7, "torpedo count");
     });
 
-    test("TorpedoMissesDueToDistanceAndCleverKlingonEvasiveActions", function() {
+    test("Torpedo misses due to distance and clever klingon evasive actions", function() {
         // given
         var distanceWhereTorpedoesAlwaysMiss = 3500;
         this.ui.target = new Klingon(distanceWhereTorpedoesAlwaysMiss, 200);
@@ -136,7 +136,7 @@
         equal(this.game.t, 7, "torpedo count");
     });
 
-    test("TorpedoDestroysKlingon", function() {
+    test("Torpedo destroys klingon", function() {
         // given
         var klingon = new Klingon(500, 200);
         sinon.spy(klingon, "destroy");
@@ -152,7 +152,7 @@
         ok(klingon.destroy.calledOnce, "klingon destroyed");
     });
 
-    test("TorpedoDamagesKlingon", function() {
+    test("Torpedo damages klingon", function() {
         // given
         this.ui.target = new Klingon(500, 2000);
 
