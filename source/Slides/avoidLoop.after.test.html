@@ -11,7 +11,7 @@
 <script src="../../lib/qunit.js"></script>
 <script>
 
-    module("inlineVariable.after");
+    module("avoidLoop.after");
 
     Lot = function(shares, cost) {
         this.shares = shares;
@@ -24,8 +24,8 @@
 
     // Begin slide
     totalGain = function(lots, currentPrice) {
-        return lots.reduce(function(sum, lot) {
-            return sum + lot.gainWhenPriceIs(currentPrice);
+        return lots.reduce(function(previousSum, lot) {
+            return previousSum + lot.gainWhenPriceIs(currentPrice);
         }, 0.0);
     };
     // End slide
