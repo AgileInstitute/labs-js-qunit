@@ -3,7 +3,7 @@ var config = {
 		'source/'
 	],
 	exclusions: [
-		// ...
+		'source/MessTrekLab/Tests/lib/'
 	],
 	jsLint: './build/jslint.js',
 	lintOptions: {},
