@@ -9,7 +9,7 @@
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
   <script src="lib/qunit.js"></script>
-  <script src="lib/jquery.js"></script>
+  <script src="../lib/jquery.js"></script>
   <script src="lib/sinon.js"></script>
   <script src="../StarTrek/game.js"></script>
   <script src="../StarTrek/klingon.js"></script>
@@ -30,11 +30,25 @@
           equal(this.name, 'Rob');
       });
 
-      module('game');
+      test('html fixture', function () {
+          $('<div id="myDiv">Fixed</div>').appendTo('#qunit-fixture');
+          equal($('#myDiv').text(), 'Fixed');
+      });
 
-      test('...description...', function () {
-          // ... your test goes here ...
-      })
+      module('sinon basics', {
+          setup: function () {
+              var self = this;
+              sinon.stub(window, 'alert', function (msg) { self.msg = msg ; });
+          },
+          teardown: function () {
+              window.alert.restore();
+          }
+      });
+
+      test('alert', function () {
+          alert('No popup!');
+          equal(this.msg, 'No popup!');
+      });
 
   </script>
 </body>
